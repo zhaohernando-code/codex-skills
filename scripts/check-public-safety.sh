@@ -6,6 +6,10 @@ cd "$ROOT"
 
 failures=()
 LOCAL_ABS_PATTERN="/Users/"'hernando_zhao'
+GITHUB_TOKEN_PATTERN='ghp''_[A-Za-z0-9_]{20,}'
+GITHUB_PAT_PATTERN='github''_pat_[A-Za-z0-9_]{20,}'
+OPENAI_KEY_PATTERN='sk''-[A-Za-z0-9]{20,}'
+BEARER_PATTERN='Bear''er[[:space:]]+[A-Za-z0-9._~+/=-]{12,}'
 
 add_failure() {
   failures+=("$1")
@@ -51,7 +55,7 @@ while IFS= read -r -d '' file; do
     add_failure "$rel: contains private edge auth bypass variable name"
   fi
 
-  if grep -nE 'ghp_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}|Bearer[[:space:]]+[A-Za-z0-9._~+/=-]{12,}' "$file" >/tmp/codex-skills-safety-hit.$$ 2>/dev/null; then
+  if grep -nE "$GITHUB_TOKEN_PATTERN|$GITHUB_PAT_PATTERN|$OPENAI_KEY_PATTERN|$BEARER_PATTERN" "$file" >/tmp/codex-skills-safety-hit.$$ 2>/dev/null; then
     add_failure "$rel: contains token-like secret material"
   fi
 
