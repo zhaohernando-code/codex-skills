@@ -1,0 +1,20 @@
+#!/bin/bash
+# Codex post-merge hook: 合并后清理 worktree
+
+set -e
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# 只在 main/master 分支执行
+if [ "$BRANCH" != "main" ] && [ "$BRANCH" != "master" ]; then
+  exit 0
+fi
+
+echo "🧹 Checking for merged worktrees to clean up..."
+
+# 调用清理脚本（dry-run）
+CODEX_ROOT=$(dirname "$REPO_ROOT")
+if [ -f "$CODEX_ROOT/scripts/reap-merged-worktrees.js" ]; then
+  node "$CODEX_ROOT/scripts/reap-merged-worktrees.js" --dry-run || true
+fi

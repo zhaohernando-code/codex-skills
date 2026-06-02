@@ -1,0 +1,16 @@
+.DS_Store
+*.pyc
+__pycache__/
+.pytest_cache/
+node_modules/
+dist/
+build/
+tmp/
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.tar.gz
+.codex-system/
+workflow-sessions/
+baselines/

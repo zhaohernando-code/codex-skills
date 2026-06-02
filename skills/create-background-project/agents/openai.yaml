@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Background Project"
+  short_description: "Create governed local background services"
+  default_prompt: "Use $create-background-project to decide whether a new background project is justified and create it with governed runtime, LaunchAgent, logging, and route practices."

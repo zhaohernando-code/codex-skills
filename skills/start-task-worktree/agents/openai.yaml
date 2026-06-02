@@ -1,0 +1,4 @@
+interface:
+  display_name: "Start Task Worktree"
+  short_description: "Create an isolated worktree before editing"
+  default_prompt: "Use $start-task-worktree to prepare an isolated task worktree for this development request before making changes."

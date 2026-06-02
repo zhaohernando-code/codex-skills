@@ -1,0 +1,4 @@
+interface:
+  display_name: "Claude DeepSeek Review"
+  short_description: "Run Claude Code through DeepSeek safely"
+  default_prompt: "Use $claude-deepseek-review to run an independent read-only review with Claude Code backed by DeepSeek."

@@ -1,0 +1,26 @@
+--- SKILL.md
++++ SKILL.md
+@@ -221,7 +221,23 @@
+ - **Structure longer reference files** - For files longer than 100 lines, include a table of contents at the top so Codex can see the full scope when previewing.
+ 
+ ## Skill Creation Process
++
++### Hernando codex-skills Source Workflow
++
++For Hernando's local setup, personal skills are governed by the public source repository `${CODEX_SKILLS_REPO:-$HOME/codex/projects/codex-skills}`. Do not create or update personal skills directly under `${CODEX_HOME:-$HOME/.codex}/skills` as the source of truth.
++
++When creating, updating, renaming, or deleting a personal skill:
++
++1. Confirm the `codex-skills` source repository exists and is current with `origin/main`.
++2. Create new skills in `codex-skills/skills/<skill-name>/`, or modify the existing source-repo skill directory.
++3. Update `codex-skills/docs/skill_list.md` with the skill id, Chinese display name, and purpose.
++4. Run `scripts/validate-skills.sh` and `scripts/check-public-safety.sh` from the source repo.
++5. Commit and push the source repo change to `origin/main`.
++6. Run `scripts/install.sh` from the source repo to sync `${CODEX_HOME:-$HOME/.codex}/skills` and the Claude Code bridge.
++7. If a temporary local edit was made directly under `${CODEX_HOME:-$HOME/.codex}/skills`, backport it to the source repo and push it in the same task before claiming completion.
+ 
++System skills are not vendored into the public source repo. Keep local system-skill changes as minimal patches under `patches/`, and let `scripts/install.sh` apply them.
++
+ Skill creation involves these steps:
+ 
+ 1. Understand the skill with concrete examples

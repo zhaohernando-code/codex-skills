@@ -1,0 +1,53 @@
+{
+  "$comment": "SINGLE SOURCE OF TRUTH for all agent workflow-guard hook registrations. Edit ONLY this file, then run `node scripts/generate-agent-hooks.js --write` to render every surface. `--check` (used by check-workflow-closeout.js) re-renders and diffs against the live/template files so drift fails closed. All three surfaces share one guard script; --agent distinguishes them.",
+  "guardScript": "${CODEX_WORKFLOW_ROOT:-$HOME/codex}/scripts/agent-workflow-guard.js",
+  "timeout": 30,
+  "events": {
+    "SessionStart": { "matcher": "startup|resume" },
+    "UserPromptSubmit": {},
+    "PreToolUse": { "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit" },
+    "PostToolUse": { "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit" },
+    "Stop": {},
+    "PreCompact": {},
+    "PostCompact": {}
+  },
+  "surfaces": {
+    "claude": {
+      "agent": "claude",
+      "description": "Claude Code CLI. May keep stricter tool-lifecycle hooks than Codex, but Stop closeout semantics stay aligned. Scope is recovered inside the guard script (early-exit when cwd is outside CODEX_ROOT and the prompt has no codex route), so global registration no longer pollutes unrelated sessions while still covering codex subdirectories/worktrees that Claude's no-parent-walk hook discovery would otherwise miss.",
+      "events": [
+        "SessionStart",
+        "UserPromptSubmit",
+        "PreToolUse",
+        "PostToolUse",
+        "Stop",
+        "PreCompact",
+        "PostCompact"
+      ],
+      "targets": [
+        {
+          "kind": "claude-settings",
+          "path": "~/.claude/settings.json",
+          "live": true
+        }
+      ]
+    },
+    "codex": {
+      "agent": "codex",
+      "description": "Codex Desktop and Codex CLI share ~/.codex/hooks.json (enabled by config.toml hooks=true). Low-noise: SessionStart/UserPromptSubmit/Stop only; PreToolUse/PostToolUse must NOT be enabled here.",
+      "events": ["SessionStart", "UserPromptSubmit", "Stop"],
+      "targets": [
+        {
+          "kind": "codex-hooks",
+          "path": "scripts/codex-hooks.low-noise.json",
+          "live": false
+        },
+        {
+          "kind": "codex-hooks",
+          "path": "~/.codex/hooks.json",
+          "live": true
+        }
+      ]
+    }
+  }
+}

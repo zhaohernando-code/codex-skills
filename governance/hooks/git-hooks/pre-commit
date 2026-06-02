@@ -1,0 +1,33 @@
+#!/bin/bash
+# Codex pre-commit hook: 确保测试通过
+
+set -e
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+PROJECT_NAME=$(basename "$REPO_ROOT")
+
+echo "🔍 Running pre-commit checks for $PROJECT_NAME..."
+
+# 检查是否有 package.json
+if [ -f "$REPO_ROOT/package.json" ]; then
+  # 检查是否有测试脚本
+  if grep -q '"test"' "$REPO_ROOT/package.json"; then
+    echo "Running tests..."
+    npm test || {
+      echo "❌ Tests failed. Commit blocked."
+      echo "Fix the tests or use 'git commit --no-verify' to skip (not recommended)."
+      exit 1
+    }
+  fi
+
+  # 检查是否有 lint 脚本
+  if grep -q '"lint"' "$REPO_ROOT/package.json"; then
+    echo "Running linter..."
+    npm run lint || {
+      echo "⚠️  Linter found issues. Consider fixing them."
+      # 不阻断，只警告
+    }
+  fi
+fi
+
+echo "✅ Pre-commit checks passed"

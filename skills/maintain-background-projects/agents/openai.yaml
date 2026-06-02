@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain Background Projects"
+  short_description: "Audit and repair local background services"
+  default_prompt: "Use $maintain-background-projects to audit local background projects, clean stale runtime artifacts, repair LaunchAgents, and verify live routes."

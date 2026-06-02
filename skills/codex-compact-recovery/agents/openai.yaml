@@ -1,0 +1,4 @@
+interface:
+  display_name: "Compact Recovery"
+  short_description: "Recover Codex Desktop sessions stuck after compact failures"
+  default_prompt: "Use $codex-compact-recovery to find the latest Codex Desktop session stuck after a context compaction failure and generate a resume prompt for a new session."

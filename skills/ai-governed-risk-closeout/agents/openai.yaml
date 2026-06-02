@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Governed Risk Closeout"
+  short_description: "Close known risks with gated AI review."
+  default_prompt: "Close the known risks recorded in the current repository ledger using the AI-governed risk closeout workflow."
