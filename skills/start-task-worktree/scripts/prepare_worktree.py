@@ -128,7 +128,13 @@ def default_base(repo_path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Create an isolated task worktree from an upstream baseline.")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Fallback helper for plain CLI sessions: create an isolated task "
+            "worktree from an upstream baseline. In Codex App, prefer native "
+            "thread worktrees via fork_thread/create_thread."
+        )
+    )
     parser.add_argument("--project", help="Project id from ~/codex/WORKSPACE_INDEX.json.")
     parser.add_argument("--repo", help="Absolute or relative path to a git repo.")
     parser.add_argument("--cwd", default=os.getcwd(), help="Current working directory used for auto-detection.")
